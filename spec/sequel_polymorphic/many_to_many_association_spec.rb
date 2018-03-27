@@ -24,6 +24,24 @@ describe Sequel::Plugins::Polymorphic do
       # TODO: add tests of merging options
     end
 
+    describe "#association_join" do
+      it "allows joining a :through association" do
+        @post.add_tag(@tag1)
+        @post.add_tag(@tag2)
+
+        assert_equal 2, Post.association_join(:tags).all.size
+      end
+    end
+
+    describe "#eager" do
+      it "allows eager loading a :through association" do
+        @post.add_tag(@tag1)
+        @post.add_tag(@tag2)
+
+        assert_equal 2, Post.eager(:tags).all.first.tags.size
+      end
+    end
+
     describe "#add_association" do
       it "should associate an object" do
         @post.add_tag(@tag1)

@@ -110,7 +110,7 @@ module Sequel
             association_options = {
               :left_key   => able_id,
               :join_table => through,
-              :conditions => {able_type => self.to_s},
+              :conditions => {Sequel.qualify(through, able_type) => self.to_s},
               :adder      => proc { |many_of_instance| through_klass.create(collection_singular_id => many_of_instance.pk, able_id => pk, able_type => self.class.to_s) },
               :remover    => proc { |many_of_instance| through_klass.where(collection_singular_id => many_of_instance.pk, able_id => pk, able_type => self.class.to_s).delete },
               :clearer    => proc { through_klass.where(able_id => pk, able_type => self.class.to_s).delete }
